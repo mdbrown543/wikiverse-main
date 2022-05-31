@@ -30409,6 +30409,8 @@ exports.App = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
+var _reactDom = require("react-dom");
+
 var _PagesList = require("./PagesList");
 
 var _Page = require("./Page");
@@ -30422,6 +30424,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -30445,15 +30455,50 @@ var App = function App() {
       pages = _useState2[0],
       setPages = _useState2[1];
 
-  var _useState3 = (0, _react.useState)({}),
+  var _useState3 = (0, _react.useState)([]),
       _useState4 = _slicedToArray(_useState3, 2),
       singlePage = _useState4[0],
       setSinglePage = _useState4[1];
 
   var _useState5 = (0, _react.useState)(false),
       _useState6 = _slicedToArray(_useState5, 2),
-      click = _useState6[0],
-      setClick = _useState6[1];
+      clickPage = _useState6[0],
+      setClickPage = _useState6[1];
+
+  var _useState7 = (0, _react.useState)(false),
+      _useState8 = _slicedToArray(_useState7, 2),
+      addPage = _useState8[0],
+      setAddPage = _useState8[1];
+
+  var _useState9 = (0, _react.useState)(false),
+      _useState10 = _slicedToArray(_useState9, 2),
+      clickDelete = _useState10[0],
+      setClickDelete = _useState10[1];
+
+  var _useState11 = (0, _react.useState)(''),
+      _useState12 = _slicedToArray(_useState11, 2),
+      title = _useState12[0],
+      setTitle = _useState12[1];
+
+  var _useState13 = (0, _react.useState)(''),
+      _useState14 = _slicedToArray(_useState13, 2),
+      content = _useState14[0],
+      setContent = _useState14[1];
+
+  var _useState15 = (0, _react.useState)(''),
+      _useState16 = _slicedToArray(_useState15, 2),
+      author = _useState16[0],
+      setAuthor = _useState16[1];
+
+  var _useState17 = (0, _react.useState)(''),
+      _useState18 = _slicedToArray(_useState17, 2),
+      email = _useState18[0],
+      setEmail = _useState18[1];
+
+  var _useState19 = (0, _react.useState)(''),
+      _useState20 = _slicedToArray(_useState19, 2),
+      tags = _useState20[0],
+      setTags = _useState20[1];
 
   function fetchPages() {
     return _fetchPages.apply(this, arguments);
@@ -30511,7 +30556,7 @@ var App = function App() {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              setClick(true);
+              setClickPage(true);
               _context2.next = 3;
               return fetch("".concat(_api.default, "/wiki/:slug"));
 
@@ -30535,38 +30580,85 @@ var App = function App() {
     return _handleClick.apply(this, arguments);
   }
 
-  function handleDelete() {
-    return _handleDelete.apply(this, arguments);
+  var handleSubmit = function handleSubmit(event) {
+    event.preventDefault();
+    setPages([].concat(_toConsumableArray(pages), [{
+      title: title
+    }]));
+  };
+
+  function handleAdd() {
+    return _handleAdd.apply(this, arguments);
   }
 
-  function _handleDelete() {
-    _handleDelete = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+  function _handleAdd() {
+    _handleAdd = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
       var response, data;
       return regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              _context3.next = 2;
-              return fetch("".concat(_api.default, "/wiki/:slug"), {
-                method: "DELETE"
+              setAddPage(true);
+              _context3.next = 3;
+              return fetch("".concat(_api.default, "/wiki"), {
+                method: "POST",
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify()
               });
 
-            case 2:
+            case 3:
               response = _context3.sent;
-              _context3.next = 5;
+              _context3.next = 6;
               return response.json();
 
-            case 5:
+            case 6:
               data = _context3.sent;
-              console.log(data);
-              setPages(data);
 
-            case 8:
+            case 7:
             case "end":
               return _context3.stop();
           }
         }
       }, _callee3);
+    }));
+    return _handleAdd.apply(this, arguments);
+  }
+
+  function handleDelete() {
+    return _handleDelete.apply(this, arguments);
+  }
+
+  function _handleDelete() {
+    _handleDelete = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+      var response, data;
+      return regeneratorRuntime.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              setClickDelete(true);
+              _context4.next = 3;
+              return fetch("".concat(_api.default, "/wiki/:slug"), {
+                method: "DELETE"
+              });
+
+            case 3:
+              response = _context4.sent;
+              _context4.next = 6;
+              return response.json();
+
+            case 6:
+              data = _context4.sent;
+              console.log(data);
+              setPages(data);
+
+            case 9:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4);
     }));
     return _handleDelete.apply(this, arguments);
   }
@@ -30577,11 +30669,63 @@ var App = function App() {
       onClick: handleClick,
       value: pages.url
     }, pages.title);
-  }), /*#__PURE__*/_react.default.createElement("br", null), click ? singlePage.map(function (singlePage, idx) {
+  }), /*#__PURE__*/_react.default.createElement("br", null), clickPage ? singlePage.map(function (singlePage, idx) {
     return /*#__PURE__*/_react.default.createElement("div", {
       key: idx
     }, singlePage.title);
   }) : '', /*#__PURE__*/_react.default.createElement("button", {
+    onClick: handleAdd
+  }, "Create Page"), /*#__PURE__*/_react.default.createElement("section", {
+    id: "controls"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "step"
+  }, /*#__PURE__*/_react.default.createElement("h2", null, "Add A Page")), /*#__PURE__*/_react.default.createElement("form", {
+    onSubmit: handleSubmit,
+    className: "step",
+    "aria-label": "form"
+  }, /*#__PURE__*/_react.default.createElement("input", {
+    type: "text",
+    placeholder: "Title",
+    "aria-label": "title",
+    value: title,
+    onChange: function onChange(e) {
+      return setTitle(e.target.value);
+    }
+  }), /*#__PURE__*/_react.default.createElement("input", {
+    type: "text",
+    placeholder: "Article Content",
+    "aria-label": "content",
+    value: content,
+    onChange: function onChange(e) {
+      return setContent(e.target.value);
+    }
+  }), /*#__PURE__*/_react.default.createElement("input", {
+    type: "text",
+    placeholder: "Author Name",
+    "aria-label": "author",
+    value: author,
+    onChange: function onChange(e) {
+      return setAuthor(e.target.value);
+    }
+  }), /*#__PURE__*/_react.default.createElement("input", {
+    type: "text",
+    placeholder: "Author Email",
+    "aria-label": "email",
+    value: email,
+    onChange: function onChange(e) {
+      return setEmail(e.target.value);
+    }
+  }), /*#__PURE__*/_react.default.createElement("input", {
+    type: "text",
+    placeholder: "Tags",
+    "aria-label": "tag",
+    value: tags,
+    onChange: function onChange(e) {
+      return setTags(e.target.value);
+    }
+  }), /*#__PURE__*/_react.default.createElement("button", {
+    type: "submit"
+  }, "Add Page"))), /*#__PURE__*/_react.default.createElement("button", {
     onClick: fetchPages
   }, "Back To Wiki List"), /*#__PURE__*/_react.default.createElement("button", {
     onClick: handleDelete
@@ -30589,7 +30733,7 @@ var App = function App() {
 };
 
 exports.App = App;
-},{"react":"../node_modules/react/index.js","./PagesList":"react/components/PagesList.js","./Page":"react/components/Page.js","./onePage":"react/components/onePage.js","../api":"react/api.js"}],"react/index.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./PagesList":"react/components/PagesList.js","./Page":"react/components/Page.js","./onePage":"react/components/onePage.js","../api":"react/api.js"}],"react/index.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
@@ -30631,7 +30775,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54344" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62236" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
